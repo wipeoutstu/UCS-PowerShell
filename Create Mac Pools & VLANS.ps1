@@ -8,6 +8,14 @@
 
 # Edit the path to the Excel Workbook & sheet name
 
+#Create VLANs
+$VLANs = Import-Excel -Path C:\UCSPS\UCS.xlsx -WorkSheetName VLANs
+ForEach ($VLAN in $VLANs) {
+    $VLANnum = $VLAN.VLAN
+    $VLANdesc = $VLAN.Descr
+
+    Get-UcsLanCloud | Add-UcsVlan -CompressionType "included" -DefaultNet "no" -Id $VLANnum -McastPolicyName "" -Name $VLANdesc -PolicyOwner "local" -PubNwName "" -Sharing "none"
+}
 
 # Create VLANs & Add them to VLAN Group
 $VLANs = Import-Excel -Path C:\UCS\UCS.xlsx -WorkSheetName VLANs
